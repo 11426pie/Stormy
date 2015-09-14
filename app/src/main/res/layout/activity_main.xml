@@ -37,17 +37,6 @@
         android:textColor="#80ffffff"
         android:textSize="18sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Alcatraz Island, CA"
-        android:id="@+id/locationLabel"
-        android:layout_above="@+id/timeLabel"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="60dp"
-        android:textColor="@android:color/white"
-        android:textSize="24sp" />
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -146,5 +135,25 @@
         android:layout_alignLeft="@+id/refreshImageView"
         android:layout_alignStart="@+id/refreshImageView"
         android:layout_alignTop="@+id/refreshImageView"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alcatraz Island, CA"
+        android:id="@+id/locationLabel"
+        android:layout_above="@+id/timeLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next Activity"
+        android:id="@+id/changeActivity"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="sendMessage"/>
 
 </RelativeLayout>

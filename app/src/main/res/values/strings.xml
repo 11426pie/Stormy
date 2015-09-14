@@ -7,4 +7,6 @@
     <string name="error_message">There\'s some error</string>
     <string name="error_ok">OK</string>
     <string name="network_unavailable">Network is Unavailable</string>
+    <string name="title_activity_second">SecondActivity</string>
+    <string name="title_activity_display_message">My Message</string>
 </resources>

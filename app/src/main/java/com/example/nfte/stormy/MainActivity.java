@@ -1,18 +1,36 @@
 package com.example.nfte.stormy;
-
+// ANDROID GOOGLE API KEY:AIzaSyBbZzK9m9ix4H7gTKTFzK7mynMdf1KNZSo
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.GeoDataApi;
+import com.google.android.gms.location.places.PlaceDetectionApi;
+import com.google.android.gms.location.places.PlaceLikelihood;
+import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
@@ -33,7 +51,8 @@ public class MainActivity extends ActionBarActivity {
     public static final String TAG = MainActivity.class.getSimpleName();
 
     private CurrentWeather mCurrentWeather;
-    
+    private GoogleApiClient mGoogleApiClient;
+
     @Bind(R.id.timeLabel) TextView mTimeLabel;
     @Bind(R.id.temperatureLabel) TextView mTemperatureLabel;
     @Bind(R.id.humidityValue) TextView mHumidityValue;
@@ -42,6 +61,8 @@ public class MainActivity extends ActionBarActivity {
     @Bind(R.id.iconImageView) ImageView mIconImageView;
     @Bind(R.id.refreshImageView) ImageView mRefreshImageView;
     @Bind(R.id.progressBar) ProgressBar mProgressBar;
+    @Bind(R.id.locationLabel) TextView mLocationLabel;
+    @Bind(R.id.changeActivity) Button mChangeActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +70,28 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-
+        //mPlaceSearch.getVisibility(View.GONE);
         mProgressBar.setVisibility(View.INVISIBLE);
+
+
+
+
+        PendingResult result = Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, mPlaceSearch.getText().toString(), new LatLngBounds(new LatLng(0,0), new LatLng(1,1)), null);
+
+        mLocationLabel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                mLocationLabel.setVisibility(View.INVISIBLE);
+            }
+        });
+        mPlaceSearch.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                mLocationLabel.setVisibility(View.VISIBLE);
+                mLocationLabel.setText(mPlaceSearch.getText());
+            }
+        });
+
 
         final double latitude = 37.8267;
         final double longitude = -122.423;
@@ -59,6 +100,8 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 getForecast(latitude,longitude);
+
+
             }
         });
 
@@ -148,7 +191,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void updateDisplay() {
         mTemperatureLabel.setText(mCurrentWeather.getmTemperature() + "");
-        mTimeLabel.setText("At "+ mCurrentWeather.getFormattedTime() +", it will be");
+        mTimeLabel.setText("At " + mCurrentWeather.getFormattedTime() + ", it will be");
         mHumidityValue.setText(mCurrentWeather.getmHumidity() + "");
         mPrecipValue.setText(mCurrentWeather.getmPrecipChance() + "%");
         mSummaryLabel.setText(mCurrentWeather.getmSummary());
@@ -197,5 +240,16 @@ public class MainActivity extends ActionBarActivity {
         dialog.show(getFragmentManager(), "error_dialog");
 
     }
+
+    public void sendMessage(View view){
+        Intent i = new Intent(this, DisplayMessageActivity.class);
+        startActivity(i);
+
+    }
+
+
+
+
+
 
 }
